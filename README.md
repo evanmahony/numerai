@@ -1,6 +1,6 @@
 # Numerai
 
-My attempt at the [numer.ai](https://numer.ai/). My account can be found [here](https://numer.ai/emahony)
+My attempt at the [numer.ai](https://numer.ai/). My account can be found [here](https://numer.ai/emahony).
 
 ## Overview
 
