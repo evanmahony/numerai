@@ -1,6 +1,6 @@
 FROM jupyter/scipy-notebook
 RUN rmdir work
-RUN pip3 install torch torchvision torchaudio numerapi xgboost datatable
+RUN pip3 install torch torchvision torchaudio numerapi xgboost datatable tensorboard
 COPY ./src/ .
 RUN python init.py
 RUN mkdir data train
