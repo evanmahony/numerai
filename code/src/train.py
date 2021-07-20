@@ -1,11 +1,9 @@
 import torch
 from torch import nn
+from torch.utils.tensorboard import SummaryWriter
 from model.wide.wide import NeuralNetwork
 from model.wide.utils import get_loaders
-import pandas as pd
-import numpy as np
 import sys
-import datatable as dt
 
 if len(sys.argv) == 1:
     lr = 1e-3
@@ -17,6 +15,9 @@ else:
     batch_size = int(sys.argv[3]) 
 
 print(f"Starting training with lr:{lr}, num_epochs:{num_epochs}, batch_size:{batch_size}")
+
+writer = SummaryWriter(comment=f"LR_{lr}_EPOCHS_{num_epochs}_BATCH_{batch_size}")
+writer.add_text('DATE', 'DATE_STRING', 0)
 
 train_loader, test_loader = get_loaders()
 
@@ -72,3 +73,4 @@ def main(train_loader, test_loader, model, loss_fn, optimizer):
     
 if __name__ == "__main__":
     main(train_loader, test_loader, model, loss_fn, optimizer)
+    writer.close()
