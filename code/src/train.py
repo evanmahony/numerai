@@ -1,3 +1,4 @@
+from datetime import datetime
 import torch
 from torch import nn
 from torch.utils.tensorboard import SummaryWriter
@@ -16,8 +17,8 @@ else:
 
 print(f"Starting training with lr:{lr}, num_epochs:{num_epochs}, batch_size:{batch_size}")
 
-writer = SummaryWriter(comment=f"LR_{lr}_EPOCHS_{num_epochs}_BATCH_{batch_size}")
-writer.add_text('DATE', 'DATE_STRING', 0)
+path = f"runs/{datetime.now().strftime('%y_%m_%dT%H_%M')}"
+writer = SummaryWriter(path)
 
 train_loader, test_loader = get_loaders()
 
@@ -62,15 +63,24 @@ def test(dataloader, model, loss_fn):
     test_loss /= num_batches
     correct /= size
     print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+    return [100*correct, test_loss]
 
 def main(train_loader, test_loader, model, loss_fn, optimizer):
     epochs = num_epochs
+
     for t in range(epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train(train_loader, model, loss_fn, optimizer)
-        test(test_loader, model, loss_fn)
+        metrics = test(test_loader, model, loss_fn)
+
+    writer.add_hparams({"lr": lr, "b_size": batch_size, "num_epochs": num_epochs}, 
+                        {"accuracy": metrics[0], "loss": metrics[1]}, 
+                        run_name="Final")
+
+    torch.save(model.state_dict(), f"{path}/model")
     print("Done!")
     
 if __name__ == "__main__":
     main(train_loader, test_loader, model, loss_fn, optimizer)
+    writer.flush()
     writer.close()
