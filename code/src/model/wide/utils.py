@@ -13,6 +13,6 @@ def get_loaders(batch_size=32):
     train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, shuffle=True)
 
     test = torch.utils.data.TensorDataset(torch.from_numpy(test_df.iloc[:, 3:-1].values), torch.from_numpy(test_df["target"].values))
-    test_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(test, batch_size=batch_size, shuffle=True)
 
     return train_loader, test_loader

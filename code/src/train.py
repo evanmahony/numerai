@@ -20,7 +20,7 @@ print(f"Starting training with lr:{lr}, num_epochs:{num_epochs}, batch_size:{bat
 path = f"runs/{datetime.now().strftime('%y_%m_%dT%H_%M')}"
 writer = SummaryWriter(path)
 
-train_loader, test_loader = get_loaders()
+train_loader, test_loader = get_loaders(batch_size=batch_size)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print("Using {} device".format(device))
@@ -28,7 +28,7 @@ print("Using {} device".format(device))
 model = NeuralNetwork().to(device)
 print(model)
 
-loss_fn = nn.BCELoss()
+loss_fn = nn.L1Loss()
 optimizer = torch.optim.SGD(model.parameters(), lr=lr)
 
 def train(dataloader, model, loss_fn, optimizer):
