@@ -15,7 +15,7 @@ class NeuralNetwork(nn.Module):
             nn.Linear(30, 9),
             nn.ReLU(),
             nn.Linear(9, 1),
-            nn.ReLU(),
+            nn.Sigmoid(),
         )
 
     def forward(self, x):
